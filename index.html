@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GF-Engineers | Τεχνικό Γραφείο Μελετών — Αμαλιάδα Ηλείας</title>
+<meta name="description" content="GF-Engineers — Τεχνικό Μελετητικό Γραφείο Χρήστου Γεωργακόπουλου & Αθανασίου Φουντά στην Αμαλιάδα Ηλείας. Τοπογραφικά, οικοδομικές άδειες, τακτοποίηση αυθαιρέτων, στατικές μελέτες, ΠΕΑ, 3D LiDAR." />
+<meta name="theme-color" content="#0d1b2a" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0b1622;
+    --bg-2:#0f1e2e;
+    --surface:#132436;
+    --surface-2:#17293c;
+    --line:rgba(255,255,255,.08);
+    --text:#e8eef5;
+    --muted:#93a4b8;
+    --accent:#ff7a33;      /* πορτοκαλί */
+    --accent-2:#2fd6c4;    /* teal */
+    --accent-soft:rgba(255,122,51,.12);
+    --teal-soft:rgba(47,214,196,.12);
+    --radius:16px;
+    --maxw:1160px;
+    --shadow:0 24px 60px -20px rgba(0,0,0,.55);
+    --font:'IBM Plex Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font);
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  section{position:relative}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:.78rem;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--accent-2);
+    display:inline-flex;align-items:center;gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--accent-2);display:inline-block}
+  h1,h2,h3{line-height:1.15;font-weight:600;letter-spacing:-.02em}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-weight:600;font-size:.95rem;
+    padding:14px 26px;border-radius:999px;
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+    cursor:pointer;border:0;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--accent),#ff9a5c);
+    color:#1a0f06;
+    box-shadow:0 12px 30px -10px rgba(255,122,51,.6);
+  }
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 40px -12px rgba(255,122,51,.75)}
+  .btn-ghost{
+    background:transparent;color:var(--text);
+    border:1px solid var(--line);
+  }
+  .btn-ghost:hover{background:var(--surface);transform:translateY(-3px);border-color:var(--accent-2)}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    transition:background .3s ease, backdrop-filter .3s ease, border-color .3s ease;
+    border-bottom:1px solid transparent;
+  }
+  header.nav.scrolled{
+    background:rgba(11,22,34,.78);
+    backdrop-filter:blur(14px) saturate(140%);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .logo{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:-.02em}
+  .logo .mark{
+    width:46px;height:46px;border-radius:12px;
+    background:#f4f6f8;
+    display:grid;place-items:center;overflow:hidden;padding:3px;
+    box-shadow:0 8px 20px -8px rgba(0,0,0,.55);
+  }
+  .logo .mark img{width:100%;height:100%;object-fit:contain}
+  .logo .name{font-size:1.15rem}
+  .logo .name small{display:block;font-size:.62rem;font-weight:500;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-family:var(--mono)}
+  .nav-links{display:flex;align-items:center;gap:32px}
+  .nav-links a{font-size:.92rem;color:var(--muted);font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-cta{display:flex;align-items:center;gap:14px}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px}
+  .burger span{width:24px;height:2px;background:var(--text);transition:.3s;border-radius:2px}
+  .mobile-menu{display:none}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:170px 0 110px;overflow:hidden}
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:-2;
+    background:
+      radial-gradient(700px 400px at 80% -5%,rgba(255,122,51,.16),transparent 60%),
+      radial-gradient(600px 500px at 8% 30%,rgba(47,214,196,.12),transparent 55%),
+      linear-gradient(180deg,var(--bg),var(--bg-2));
+  }
+  .grid-bg{
+    position:absolute;inset:0;z-index:-1;opacity:.4;
+    background-image:
+      linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+    background-size:52px 52px;
+    mask-image:radial-gradient(circle at 50% 20%,#000 0%,transparent 75%);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:center}
+  .hero h1{font-size:clamp(2.3rem,5vw,3.8rem);margin-bottom:22px}
+  .hero h1 .g{
+    background:linear-gradient(120deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p.lead{font-size:1.12rem;color:var(--muted);max-width:540px;margin-bottom:34px}
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+  .hero-badges{display:flex;gap:26px;margin-top:44px;flex-wrap:wrap}
+  .hero-badges .b{font-family:var(--mono);font-size:.82rem;color:var(--muted)}
+  .hero-badges .b strong{display:block;font-size:1.5rem;color:var(--text);font-family:var(--font);font-weight:600}
+
+  /* blueprint card */
+  .blueprint{
+    position:relative;border-radius:22px;padding:30px;
+    background:linear-gradient(160deg,var(--surface),var(--bg-2));
+    border:1px solid var(--line);box-shadow:var(--shadow);
+    animation:float 7s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  .blueprint .bp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+  .blueprint .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);display:inline-block;margin-right:6px}
+  .blueprint .dot:nth-child(2){background:#f5c542}
+  .blueprint .dot:nth-child(3){background:var(--accent-2)}
+  .blueprint .tag{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+  .bp-svg{width:100%;height:auto;border-radius:12px;background:rgba(0,0,0,.25);border:1px solid var(--line)}
+  .bp-rows{margin-top:20px;display:grid;gap:12px}
+  .bp-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.8rem;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+  .bp-row span:first-child{color:var(--muted)}
+  .bp-row span:last-child{color:var(--accent-2)}
+
+  /* ---------- SECTION TITLING ---------- */
+  .section-pad{padding:100px 0}
+  .sec-head{max-width:640px;margin-bottom:56px}
+  .sec-head h2{font-size:clamp(1.9rem,3.6vw,2.7rem);margin-bottom:16px}
+  .sec-head p{color:var(--muted);font-size:1.05rem}
+
+  /* ---------- SERVICES ---------- */
+  .services{background:linear-gradient(180deg,var(--bg-2),var(--bg))}
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .svc{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:30px 26px;transition:transform .3s ease,border-color .3s ease,background .3s ease;
+    position:relative;overflow:hidden;
+  }
+  .svc::after{
+    content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    transform:scaleX(0);transform-origin:left;transition:transform .35s ease;
+  }
+  .svc:hover{transform:translateY(-6px);border-color:rgba(47,214,196,.35);background:var(--surface-2)}
+  .svc:hover::after{transform:scaleX(1)}
+  .svc .ic{
+    width:52px;height:52px;border-radius:13px;display:grid;place-items:center;margin-bottom:20px;
+    background:var(--teal-soft);color:var(--accent-2);
+  }
+  .svc:nth-child(even) .ic{background:var(--accent-soft);color:var(--accent)}
+  .svc .ic svg{width:26px;height:26px}
+  .svc h3{font-size:1.18rem;margin-bottom:10px}
+  .svc p{color:var(--muted);font-size:.94rem}
+
+  /* ---------- STATS ---------- */
+  .stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-2)}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:56px 0;text-align:center}
+  .stat .num{font-size:2.7rem;font-weight:700;letter-spacing:-.03em;background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat .lbl{color:var(--muted);font-family:var(--mono);font-size:.82rem;text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .about-list{margin-top:28px;display:grid;gap:16px}
+  .about-list li{list-style:none;display:flex;gap:14px;align-items:flex-start}
+  .about-list .chk{
+    flex:none;width:24px;height:24px;border-radius:7px;background:var(--teal-soft);color:var(--accent-2);
+    display:grid;place-items:center;font-size:.8rem;margin-top:3px;
+  }
+  .about-list strong{color:var(--text)}
+  .about-list span{color:var(--muted)}
+  .profile-card{
+    background:linear-gradient(160deg,var(--surface),var(--bg-2));
+    border:1px solid var(--line);border-radius:20px;padding:34px;box-shadow:var(--shadow);
+  }
+  .profile-card .avatar{
+    width:74px;height:74px;border-radius:18px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:grid;place-items:center;font-family:var(--mono);font-weight:600;font-size:1.5rem;color:#0b1622;margin-bottom:20px;
+  }
+  .profile-card h3{font-size:1.35rem}
+  .profile-card .role{color:var(--accent-2);font-family:var(--mono);font-size:.85rem;margin:4px 0 18px}
+  .profile-card .meta{display:grid;gap:10px;margin-top:20px;padding-top:20px;border-top:1px solid var(--line)}
+  .profile-card .meta div{display:flex;justify-content:space-between;font-size:.9rem}
+  .profile-card .meta span:first-child{color:var(--muted);font-family:var(--mono);font-size:.8rem}
+
+  /* ---------- PROCESS ---------- */
+  .process{background:linear-gradient(180deg,var(--bg),var(--bg-2))}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;counter-reset:step}
+  .step{position:relative;padding:30px 24px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--line)}
+  .step .n{
+    font-family:var(--mono);font-size:.9rem;font-weight:600;color:var(--accent);
+    width:44px;height:44px;border-radius:12px;background:var(--accent-soft);display:grid;place-items:center;margin-bottom:18px;
+  }
+  .step h3{font-size:1.1rem;margin-bottom:8px}
+  .step p{color:var(--muted);font-size:.9rem}
+
+  /* ---------- GALLERY ---------- */
+  .gallery{background:linear-gradient(180deg,var(--bg-2),var(--bg))}
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .g-item{
+    position:relative;overflow:hidden;border-radius:16px;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface);aspect-ratio:4/3;
+  }
+  .g-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+  .g-item:hover img{transform:scale(1.08)}
+  .g-item::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(11,22,34,.6),transparent 50%);
+    opacity:0;transition:opacity .35s ease;
+  }
+  .g-item .zoom{
+    position:absolute;right:12px;bottom:12px;z-index:2;
+    width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+    background:rgba(11,22,34,.55);color:#fff;backdrop-filter:blur(6px);
+    opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease;
+  }
+  .g-item .zoom svg{width:18px;height:18px}
+  .g-item:hover::after{opacity:1}
+  .g-item:hover .zoom{opacity:1;transform:none}
+  .gallery-empty{color:var(--muted);text-align:center;font-family:var(--mono);font-size:.9rem;padding:20px 0}
+
+  /* lightbox */
+  .lightbox{
+    position:fixed;inset:0;z-index:100;display:none;
+    align-items:center;justify-content:center;
+    background:rgba(6,12,20,.92);backdrop-filter:blur(8px);
+  }
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:90vw;max-height:82vh;border-radius:12px;box-shadow:0 30px 80px -20px rgba(0,0,0,.7);animation:lbin .3s ease}
+  @keyframes lbin{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+  .lb-close,.lb-nav{
+    position:absolute;background:rgba(255,255,255,.08);border:1px solid var(--line);
+    color:#fff;cursor:pointer;border-radius:50%;display:grid;place-items:center;
+    transition:background .2s,transform .2s;
+  }
+  .lb-close{top:22px;right:24px;width:46px;height:46px;font-size:1.6rem;line-height:1}
+  .lb-nav{top:50%;transform:translateY(-50%);width:52px;height:52px;font-size:2rem;line-height:1}
+  .lb-prev{left:24px}
+  .lb-next{right:24px}
+  .lb-close:hover,.lb-nav:hover{background:var(--accent);color:#1a0f06}
+  .lb-nav:hover{transform:translateY(-50%) scale(1.08)}
+  .lb-counter{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+
+  /* ---------- CTA / CONTACT ---------- */
+  .contact{padding:100px 0}
+  .contact-card{
+    position:relative;overflow:hidden;border-radius:26px;padding:64px 48px;
+    background:linear-gradient(150deg,var(--surface-2),var(--bg-2));
+    border:1px solid var(--line);box-shadow:var(--shadow);
+  }
+  .contact-card::before{
+    content:"";position:absolute;inset:0;z-index:0;
+    background:radial-gradient(500px 300px at 90% 10%,rgba(255,122,51,.18),transparent 60%),
+               radial-gradient(400px 300px at 5% 90%,rgba(47,214,196,.14),transparent 60%);
+  }
+  .contact-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
+  .contact-grid h2{font-size:clamp(1.9rem,3.6vw,2.6rem);margin-bottom:16px}
+  .contact-grid p{color:var(--muted);margin-bottom:28px;font-size:1.05rem}
+  .contact-actions{display:flex;gap:14px;flex-wrap:wrap}
+  .contact-info{display:grid;gap:18px}
+  .ci{display:flex;gap:16px;align-items:center;background:rgba(255,255,255,.03);border:1px solid var(--line);padding:18px 20px;border-radius:14px;transition:border-color .25s,transform .25s}
+  .ci:hover{border-color:var(--accent-2);transform:translateX(4px)}
+  .ci .ic{flex:none;width:44px;height:44px;border-radius:11px;background:var(--teal-soft);color:var(--accent-2);display:grid;place-items:center}
+  .ci .ic svg{width:22px;height:22px}
+  .ci small{display:block;color:var(--muted);font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em}
+  .ci strong{font-weight:600;font-size:.98rem}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line);background:var(--bg-2);padding:56px 0 30px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:40px}
+  .foot-grid p{color:var(--muted);font-size:.92rem;margin-top:16px;max-width:340px}
+  .foot-col h4{font-size:.8rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:18px}
+  .foot-col a{display:block;color:var(--muted);font-size:.92rem;padding:6px 0;transition:color .2s}
+  .foot-col a:hover{color:var(--accent-2)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:26px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;flex-wrap:wrap;gap:12px}
+
+  /* ---------- reveal animation ---------- */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:960px){
+    .hero-grid,.about-grid,.contact-grid{grid-template-columns:1fr}
+    .svc-grid,.steps,.gallery-grid{grid-template-columns:repeat(2,1fr)}
+    .stats-grid{grid-template-columns:repeat(2,1fr);gap:36px 20px}
+    .lb-nav{width:44px;height:44px}
+    .lb-prev{left:10px}.lb-next{right:10px}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .blueprint{max-width:460px}
+  }
+  @media(max-width:640px){
+    .nav-links,.nav-cta .btn{display:none}
+    .burger{display:flex}
+    .mobile-menu.open{display:block;position:fixed;inset:74px 0 auto 0;background:rgba(11,22,34,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:20px 24px;z-index:49}
+    .mobile-menu.open a{display:block;padding:14px 0;color:var(--muted);border-bottom:1px solid var(--line);font-weight:500}
+    .mobile-menu.open .btn{margin-top:16px;width:100%;justify-content:center}
+    .svc-grid,.steps,.foot-grid{grid-template-columns:1fr}
+    .hero{padding:130px 0 80px}
+    .section-pad{padding:70px 0}
+    .contact-card{padding:40px 26px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo">
+      <span class="mark"><img src="logo-mikro.jpg" alt="GF-Engineers λογότυπο" width="46" height="46" /></span>
+      <span class="name">GF-Engineers<small>Τεχνικό Γραφείο Μελετών</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#services">Υπηρεσίες</a>
+      <a href="#about">Το Γραφείο</a>
+      <a href="#process">Διαδικασία</a>
+      <a href="#works">Έργα</a>
+      <a href="#contact">Επικοινωνία</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-primary">Ζητήστε προσφορά</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Μενού"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#services">Υπηρεσίες</a>
+    <a href="#about">Το Γραφείο</a>
+    <a href="#process">Διαδικασία</a>
+    <a href="#contact">Επικοινωνία</a>
+    <a href="#contact" class="btn btn-primary">Ζητήστε προσφορά</a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="grid-bg"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy reveal">
+      <span class="eyebrow">Αμαλιάδα · Ηλεία · από το 2005</span>
+      <h1>Μηχανική ακρίβεια,<br><span class="g">από την ιδέα στην άδεια.</span></h1>
+      <p class="lead">Το <strong>GF-Engineers</strong> — Τεχνικό Μελετητικό Γραφείο των Χρήστου Γεωργακόπουλου &amp; Αθανασίου Φουντά — αναλαμβάνει τοπογραφικά, οικοδομικές άδειες, στατικές μελέτες, τακτοποιήσεις &amp; ενεργειακές επιθεωρήσεις με τεχνολογία 3D LiDAR και πλήρη τεκμηρίωση.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Ξεκινήστε το έργο σας →</a>
+        <a href="#services" class="btn btn-ghost">Δείτε τις υπηρεσίες</a>
+      </div>
+      <div class="hero-badges">
+        <div class="b"><strong>20+</strong>έτη εμπειρίας</div>
+        <div class="b"><strong>500+</strong>μελέτες &amp; άδειες</div>
+        <div class="b"><strong>Ε.Μ.Π.</strong>Διπλ. Πολ. Μηχανικός</div>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal">
+      <div class="blueprint">
+        <div class="bp-head">
+          <div><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <span class="tag">TOPO_SURVEY · ΕΓΣΑ87</span>
+        </div>
+        <svg class="bp-svg" viewBox="0 0 320 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="g" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M20 0H0V20" stroke="rgba(47,214,196,.18)" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="320" height="190" fill="url(#g)"/>
+          <polygon points="45,140 110,50 210,70 255,150" fill="rgba(255,122,51,.10)" stroke="#ff7a33" stroke-width="1.6"/>
+          <circle cx="45" cy="140" r="3.5" fill="#2fd6c4"/>
+          <circle cx="110" cy="50" r="3.5" fill="#2fd6c4"/>
+          <circle cx="210" cy="70" r="3.5" fill="#2fd6c4"/>
+          <circle cx="255" cy="150" r="3.5" fill="#2fd6c4"/>
+          <line x1="45" y1="140" x2="255" y2="150" stroke="rgba(255,255,255,.25)" stroke-dasharray="4 4"/>
+          <text x="70" y="115" fill="#93a4b8" font-family="monospace" font-size="9">A=1.240 m²</text>
+          <text x="150" y="45" fill="#2fd6c4" font-family="monospace" font-size="8">Σ.Δ. 0.8</text>
+        </svg>
+        <div class="bp-rows">
+          <div class="bp-row"><span>Κάλυψη</span><span>40%</span></div>
+          <div class="bp-row"><span>Συντ. Δόμησης</span><span>0.80</span></div>
+          <div class="bp-row"><span>Σύστημα</span><span>ΕΓΣΑ87</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="services section-pad" id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Τι αναλαμβάνουμε</span>
+      <h2>Ολοκληρωμένες τεχνικές υπηρεσίες</h2>
+      <p>Από την πρώτη αποτύπωση μέχρι την τελική άδεια — καλύπτουμε όλο το φάσμα του μηχανικού έργου με ακρίβεια και συνέπεια στη νομοθεσία.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6l9-3 9 3M3 6v12l9 3M3 6l9 3m0 12V9m0 12l9-3V6l-9 3"/></svg></div>
+        <h3>Τοπογραφικά &amp; Διαγράμματα</h3>
+        <p>Αποτυπώσεις και τοπογραφικά διαγράμματα σε ΕΓΣΑ87, έλεγχοι αρτιότητας, οικοδομησιμότητας και συμβατότητας με το Κτηματολόγιο.</p>
+      </div>
+      <div class="svc reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 22V12h6v10M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+        <h3>Οικοδομικές Άδειες</h3>
+        <p>Πλήρης έκδοση αδειών &amp; εγκρίσεων μέσω e-Άδειες, με σύνταξη όλων των απαιτούμενων μελετών και τευχών.</p>
+      </div>
+      <div class="svc reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l3 6 6 .5-4.5 4 1.5 6L12 15l-6 3.5 1.5-6L3 8.5 9 8z"/></svg></div>
+        <h3>Τακτοποίηση Αυθαιρέτων</h3>
+        <p>Νομιμοποίηση &amp; τακτοποίηση κατά Ν.4495/2017, υπολογισμός προστίμου, κατηγοριοποίηση και συγκέντρωση δικαιολογητικών.</p>
+      </div>
+      <div class="svc reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10m5 10V4m5 16v-8m5 8V8"/></svg></div>
+        <h3>Στατικές Μελέτες</h3>
+        <p>Μελέτες &amp; έλεγχοι επάρκειας φερουσών κατασκευών κατά Ευρωκώδικες, καθώς και ΚΑΔΕΤ για φέρουσα τοιχοποιία.</p>
+      </div>
+      <div class="svc reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></div>
+        <h3>Ενεργειακά (ΠΕΑ / ΚΕΝΑΚ)</h3>
+        <p>Πιστοποιητικά Ενεργειακής Απόδοσης και μελέτες ΚΕΝΑΚ, με υποστήριξη σε προγράμματα επιδότησης &amp; ανακαίνισης.</p>
+      </div>
+      <div class="svc reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a9 9 0 1 0 9 9M12 3v9l6.5 6.5M12 3a9 9 0 0 1 9 9"/></svg></div>
+        <h3>Σαρώσεις 3D LiDAR</h3>
+        <p>Τρισδιάστατες σαρώσεις και νέφη σημείων υψηλής ακρίβειας για αποτυπώσεις υφιστάμενων κτιρίων και εγκαταστάσεων.</p>
+      </div>
+      <div class="svc reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M9 13h6M9 17h6"/></svg></div>
+        <h3>Πραγματογνωμοσύνες</h3>
+        <p>Εκθέσεις εκτίμησης ακινήτων για δικαστική χρήση — εμπορική &amp; αντικειμενική αξία με τεκμηριωμένη μεθοδολογία.</p>
+      </div>
+      <div class="svc reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H4zM8 20h8M12 16v4M8 9l2.5 2.5L16 6"/></svg></div>
+        <h3>Κοστολογήσεις &amp; Τεύχη</h3>
+        <p>Προμετρήσεις, κοστολογήσεις κατασκευής, τεχνικές εκθέσεις και διοικητικά έγγραφα προς δημόσιες υπηρεσίες.</p>
+      </div>
+      <div class="svc reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9M3 20h4M5 20V8l7-5 7 5v12M9 20v-6h6v6"/></svg></div>
+        <h3>Άδειες Λειτουργίας</h3>
+        <p>Υποστήριξη σε αδειοδοτήσεις καταστημάτων &amp; εγκαταστάσεων, με τα απαραίτητα σχέδια και τεχνικές μελέτες.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat reveal"><div class="num" data-count="500" data-suffix="+">0</div><div class="lbl">Ολοκληρωμένα έργα</div></div>
+      <div class="stat reveal"><div class="num" data-count="20" data-suffix="+">0</div><div class="lbl">Έτη εμπειρίας</div></div>
+      <div class="stat reveal"><div class="num" data-count="4">0</div><div class="lbl">Μέλη ομάδας</div></div>
+      <div class="stat reveal"><div class="num" data-count="100" data-suffix="%">0</div><div class="lbl">Νόμιμη τεκμηρίωση</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="section-pad" id="about">
+  <div class="wrap about-grid">
+    <div class="reveal">
+      <span class="eyebrow">Το Γραφείο</span>
+      <h2>Δύο μηχανικοί, μία δέσμευση στην ακρίβεια</h2>
+      <p style="color:var(--muted);font-size:1.05rem">Με έδρα την Αμαλιάδα Ηλείας, το GF-Engineers στελεχώνεται από μια τετραμελή ομάδα μηχανικών που συνδυάζει την τεχνική γνώση με σύγχρονα εργαλεία αποτύπωσης και σχεδίασης. Κάθε μελέτη συνοδεύεται από πλήρη τεκμηρίωση και αναφορά στην ισχύουσα νομοθεσία.</p>
+      <ul class="about-list">
+        <li><span class="chk">✓</span><span><strong>Τεκμηριωμένη νομιμότητα.</strong> Κάθε κανονιστικό ζήτημα στηρίζεται σε πρωτογενή πηγή (ΦΕΚ, νόμος, ΚΥΑ).</span></li>
+        <li><span class="chk">✓</span><span><strong>Σύγχρονη τεχνολογία.</strong> 3D LiDAR, νέφη σημείων και CAD-ready παραδοτέα σε ΕΓΣΑ87.</span></li>
+        <li><span class="chk">✓</span><span><strong>Ολιστική υποστήριξη.</strong> Από την αποτύπωση έως την τελική άδεια, με έναν συνομιλητή.</span></li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="profile-card">
+        <div class="avatar">ΧΓ</div>
+        <h3>Χρήστος Γεωργακόπουλος</h3>
+        <div class="role">Υπεύθυνος Μηχανικός</div>
+        <p style="color:var(--muted);font-size:.95rem">Διπλωματούχος Πολιτικός Μηχανικός Ε.Μ.Π., με εξειδίκευση στις στατικές μελέτες, την αδειοδότηση και την εκτίμηση ακινήτων.</p>
+        <div class="meta">
+          <div><span>Ιδιότητα</span><strong>Πολ. Μηχανικός Ε.Μ.Π.</strong></div>
+          <div><span>Α.Μ. ΤΕΕ</span><strong>101893</strong></div>
+          <div><span>Συνεργάτης</span><strong>Αθανάσιος Φουντάς</strong></div>
+          <div><span>Έδρα</span><strong>Αμαλιάδα, Ηλεία</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="process section-pad" id="process">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Πώς δουλεύουμε</span>
+      <h2>Μια καθαρή διαδικασία σε 4 βήματα</h2>
+      <p>Διαφάνεια σε κάθε στάδιο — γνωρίζετε πάντα πού βρίσκεται το έργο σας.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="n">01</div><h3>Επικοινωνία</h3><p>Καταγράφουμε τις ανάγκες σας και τα δεδομένα του ακινήτου σε μια πρώτη συζήτηση.</p></div>
+      <div class="step reveal"><div class="n">02</div><h3>Αυτοψία &amp; Αποτύπωση</h3><p>Επιτόπια αποτύπωση με τοπογραφικό εξοπλισμό και 3D LiDAR όπου απαιτείται.</p></div>
+      <div class="step reveal"><div class="n">03</div><h3>Μελέτη &amp; Σχεδίαση</h3><p>Εκπόνηση μελετών, σχεδίων και τευχών με πλήρη τεκμηρίωση κατά τη νομοθεσία.</p></div>
+      <div class="step reveal"><div class="n">04</div><h3>Αδειοδότηση</h3><p>Υποβολή μέσω e-Άδειες και παρακολούθηση έως την τελική έγκριση.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="gallery section-pad" id="works">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Το έργο μας</span>
+      <h2>Επιλεγμένα έργα &amp; αποτυπώσεις</h2>
+      <p>Μια ματιά σε μελέτες, κατασκευές και αποτυπώσεις που έχει αναλάβει το γραφείο.</p>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+    <p class="gallery-empty" id="galleryEmpty" hidden>Σύντομα θα προστεθούν φωτογραφίες έργων.</p>
+  </div>
+</section>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Προβολή φωτογραφίας">
+  <button class="lb-close" id="lbClose" aria-label="Κλείσιμο">&times;</button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Προηγούμενη">&lsaquo;</button>
+  <img id="lbImg" src="" alt="Έργο γραφείου GF-Engineers" />
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Επόμενη">&rsaquo;</button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="contact-card reveal">
+      <div class="contact-grid">
+        <div>
+          <span class="eyebrow">Επικοινωνία</span>
+          <h2>Ας συζητήσουμε το έργο σας</h2>
+          <p>Στείλτε μας τα στοιχεία του ακινήτου ή την ερώτησή σας και θα επικοινωνήσουμε άμεσα με μια πρώτη εκτίμηση.</p>
+          <div class="contact-actions">
+            <a href="mailto:gf.amaliada@gmail.com?subject=Αίτημα%20για%20μελέτη%20-%20GF-Engineers" class="btn btn-primary">✉ Στείλτε email</a>
+            <a href="#services" class="btn btn-ghost">Δείτε τις υπηρεσίες</a>
+          </div>
+        </div>
+        <div class="contact-info">
+          <a class="ci" href="tel:+302622024885">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.7 2.6a2 2 0 0 1-.5 2.1L8 9.6a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.8.4 1.7.6 2.6.7A2 2 0 0 1 22 16.9z"/></svg></span>
+            <span><small>Τηλέφωνο</small><strong>26220 24885</strong></span>
+          </a>
+          <div class="ci">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></span>
+            <span><small>Κινητά</small><strong><a href="tel:+306973204720">6973 204720</a> · <a href="tel:+306973239250">6973 239250</a></strong></span>
+          </div>
+          <a class="ci" href="mailto:gf.amaliada@gmail.com">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+            <span><small>Email</small><strong>gf.amaliada@gmail.com</strong></span>
+          </a>
+          <a class="ci" href="https://maps.google.com/?q=Έλλης+9+και+Παπαγιαννοπούλου+Αμαλιάδα" target="_blank" rel="noopener">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+            <span><small>Διεύθυνση</small><strong>Έλλης 9 &amp; Παπαγιαννοπούλου, Αμαλιάδα</strong></span>
+          </a>
+          <div class="ci">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <span><small>Ωράριο</small><strong>Δευτ. – Παρ. · 09:00 – 14:00 · απόγευμα κατόπιν ραντεβού</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#top" class="logo">
+          <span class="mark">GF</span>
+          <span class="name">GF-Engineers<small>Τεχνικό Γραφείο Μελετών</small></span>
+        </a>
+        <p>Τεχνικό Μελετητικό Γραφείο Χρήστου Γεωργακόπουλου &amp; Αθανασίου Φουντά. Μελέτες πολιτικού μηχανικού με έδρα την Αμαλιάδα Ηλείας.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Υπηρεσίες</h4>
+        <a href="#services">Τοπογραφικά</a>
+        <a href="#services">Οικοδομικές άδειες</a>
+        <a href="#services">Στατικές μελέτες</a>
+        <a href="#services">Τακτοποίηση αυθαιρέτων</a>
+        <a href="#services">ΠΕΑ / ΚΕΝΑΚ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Επικοινωνία</h4>
+        <a href="https://maps.google.com/?q=Έλλης+9+και+Παπαγιαννοπούλου+Αμαλιάδα" target="_blank" rel="noopener">Έλλης 9 &amp; Παπαγιαννοπούλου, Αμαλιάδα</a>
+        <a href="tel:+302622024885">Τηλ. 26220 24885</a>
+        <a href="tel:+306973204720">Κιν. 6973 204720 · 6973 239250</a>
+        <a href="mailto:gf.amaliada@gmail.com">gf.amaliada@gmail.com</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> GF-Engineers · Γεωργακόπουλος &amp; Φουντάς. Με επιφύλαξη παντός δικαιώματος.</span>
+      <span style="font-family:var(--mono)">Α.Μ. ΤΕΕ 101893 · ΕΓΣΑ87</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // sticky nav
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 20);
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  // mobile menu
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => menu.classList.toggle('open'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // animated counters
+  const counters = document.querySelectorAll('[data-count]');
+  const cio = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(!e.isIntersecting) return;
+      const el = e.target, target = +el.dataset.count, suf = el.dataset.suffix || '';
+      let cur = 0; const step = Math.max(1, target/60);
+      const tick = () => {
+        cur += step;
+        if(cur >= target){ el.textContent = target + suf; }
+        else { el.textContent = Math.floor(cur) + suf; requestAnimationFrame(tick); }
+      };
+      tick(); cio.unobserve(el);
+    });
+  }, {threshold:.5});
+  counters.forEach(c => cio.observe(c));
+
+  // ---------- dynamic gallery ----------
+  // Ανιχνεύει αυτόματα αρχεία photo-1, photo-2, ... με κατάληξη
+  // .webp/.jpg/.jpeg/.png/.avif. Απλώς ανέβασε ένα νέο photo-N στο repo
+  // και εμφανίζεται μόνο του στην επόμενη φόρτωση της σελίδας.
+  (function(){
+    const grid = document.getElementById('galleryGrid');
+    const empty = document.getElementById('galleryEmpty');
+    const exts = ['webp','jpg','jpeg','png','avif'];
+    const GAP_TOLERANCE = 3;   // πόσα διαδοχικά «κενά» πριν σταματήσει η αναζήτηση
+    const photos = [];
+
+    const zoomIcon = '<span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></svg></span>';
+
+    function probe(i){
+      return new Promise(res=>{
+        let e = 0;
+        (function next(){
+          if(e >= exts.length){ res(null); return; }
+          const src = 'photo-' + i + '.' + exts[e];
+          const img = new Image();
+          img.onload = () => res(src);
+          img.onerror = () => { e++; next(); };
+          img.src = src;
+        })();
+      });
+    }
+
+    function addTile(src){
+      const idx = photos.length;
+      photos.push(src);
+      const item = document.createElement('div');
+      item.className = 'g-item reveal in';
+      item.innerHTML = '<img loading="lazy" src="' + src + '" alt="Έργο γραφείου GF-Engineers ' + (idx+1) + '">' + zoomIcon;
+      item.addEventListener('click', () => openLb(idx));
+      grid.appendChild(item);
+    }
+
+    async function build(){
+      let i = 1, misses = 0;
+      while(misses < GAP_TOLERANCE && i < 300){
+        const src = await probe(i);
+        if(src){ addTile(src); misses = 0; }
+        else { misses++; }
+        i++;
+      }
+      if(photos.length === 0) empty.hidden = false;
+    }
+
+    // ---------- lightbox ----------
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCounter = document.getElementById('lbCounter');
+    let cur = 0;
+
+    function show(){
+      lbImg.src = photos[cur];
+      lbCounter.textContent = (cur+1) + ' / ' + photos.length;
+    }
+    function openLb(i){ cur = i; show(); lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeLb(){ lb.classList.remove('open'); document.body.style.overflow = ''; }
+    function step(d){ cur = (cur + d + photos.length) % photos.length; show(); }
+
+    document.getElementById('lbClose').addEventListener('click', closeLb);
+    document.getElementById('lbPrev').addEventListener('click', () => step(-1));
+    document.getElementById('lbNext').addEventListener('click', () => step(1));
+    lb.addEventListener('click', e => { if(e.target === lb) closeLb(); });
+    document.addEventListener('keydown', e => {
+      if(!lb.classList.contains('open')) return;
+      if(e.key === 'Escape') closeLb();
+      else if(e.key === 'ArrowLeft') step(-1);
+      else if(e.key === 'ArrowRight') step(1);
+    });
+
+    build();
+  })();
+
+  // year
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

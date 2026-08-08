@@ -4,8 +4,10 @@ Landing page για το **Τεχνικό Μελετητικό Γραφείο GF
 
 ## Περιεχόμενα
 
-- `index.html` — Η πλήρης σελίδα (HTML, CSS & JavaScript σε ένα αρχείο).
+- `index.html` — Η κύρια σελίδα (φωτεινό theme / navy — Inter, animated 3D κτίριο).
+- `index-v1.html` — Αρχειοθετημένη 1η εκδοχή (σκούρο «engineering» theme).
 - `logo-mikro.jpg` — Λογότυπο γραφείου.
+- `chris.webp` — Φωτογραφία μηχανικού.
 - `photo-1.webp`, `photo-2.webp`, … — Φωτογραφίες έργων για το gallery.
 
 ## Gallery έργων

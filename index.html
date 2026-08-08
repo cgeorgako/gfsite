@@ -86,12 +86,12 @@
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px}
   .logo{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:-.02em}
   .logo .mark{
-    width:40px;height:40px;border-radius:11px;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    display:grid;place-items:center;
-    font-family:var(--mono);font-weight:600;font-size:1rem;color:#0b1622;
-    box-shadow:0 8px 20px -8px rgba(47,214,196,.6);
+    width:46px;height:46px;border-radius:12px;
+    background:#f4f6f8;
+    display:grid;place-items:center;overflow:hidden;padding:3px;
+    box-shadow:0 8px 20px -8px rgba(0,0,0,.55);
   }
+  .logo .mark img{width:100%;height:100%;object-fit:contain}
   .logo .name{font-size:1.15rem}
   .logo .name small{display:block;font-size:.62rem;font-weight:500;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-family:var(--mono)}
   .nav-links{display:flex;align-items:center;gap:32px}
@@ -222,6 +222,53 @@
   .step h3{font-size:1.1rem;margin-bottom:8px}
   .step p{color:var(--muted);font-size:.9rem}
 
+  /* ---------- GALLERY ---------- */
+  .gallery{background:linear-gradient(180deg,var(--bg-2),var(--bg))}
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .g-item{
+    position:relative;overflow:hidden;border-radius:16px;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface);aspect-ratio:4/3;
+  }
+  .g-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+  .g-item:hover img{transform:scale(1.08)}
+  .g-item::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(11,22,34,.6),transparent 50%);
+    opacity:0;transition:opacity .35s ease;
+  }
+  .g-item .zoom{
+    position:absolute;right:12px;bottom:12px;z-index:2;
+    width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+    background:rgba(11,22,34,.55);color:#fff;backdrop-filter:blur(6px);
+    opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease;
+  }
+  .g-item .zoom svg{width:18px;height:18px}
+  .g-item:hover::after{opacity:1}
+  .g-item:hover .zoom{opacity:1;transform:none}
+  .gallery-empty{color:var(--muted);text-align:center;font-family:var(--mono);font-size:.9rem;padding:20px 0}
+
+  /* lightbox */
+  .lightbox{
+    position:fixed;inset:0;z-index:100;display:none;
+    align-items:center;justify-content:center;
+    background:rgba(6,12,20,.92);backdrop-filter:blur(8px);
+  }
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:90vw;max-height:82vh;border-radius:12px;box-shadow:0 30px 80px -20px rgba(0,0,0,.7);animation:lbin .3s ease}
+  @keyframes lbin{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+  .lb-close,.lb-nav{
+    position:absolute;background:rgba(255,255,255,.08);border:1px solid var(--line);
+    color:#fff;cursor:pointer;border-radius:50%;display:grid;place-items:center;
+    transition:background .2s,transform .2s;
+  }
+  .lb-close{top:22px;right:24px;width:46px;height:46px;font-size:1.6rem;line-height:1}
+  .lb-nav{top:50%;transform:translateY(-50%);width:52px;height:52px;font-size:2rem;line-height:1}
+  .lb-prev{left:24px}
+  .lb-next{right:24px}
+  .lb-close:hover,.lb-nav:hover{background:var(--accent);color:#1a0f06}
+  .lb-nav:hover{transform:translateY(-50%) scale(1.08)}
+  .lb-counter{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+
   /* ---------- CTA / CONTACT ---------- */
   .contact{padding:100px 0}
   .contact-card{
@@ -262,8 +309,10 @@
   /* ---------- RESPONSIVE ---------- */
   @media(max-width:960px){
     .hero-grid,.about-grid,.contact-grid{grid-template-columns:1fr}
-    .svc-grid,.steps{grid-template-columns:repeat(2,1fr)}
+    .svc-grid,.steps,.gallery-grid{grid-template-columns:repeat(2,1fr)}
     .stats-grid{grid-template-columns:repeat(2,1fr);gap:36px 20px}
+    .lb-nav{width:44px;height:44px}
+    .lb-prev{left:10px}.lb-next{right:10px}
     .foot-grid{grid-template-columns:1fr 1fr}
     .blueprint{max-width:460px}
   }
@@ -286,13 +335,14 @@
 <header class="nav" id="nav">
   <div class="wrap nav-inner">
     <a href="#top" class="logo">
-      <span class="mark">GF</span>
+      <span class="mark"><img src="logo-mikro.jpg" alt="GF-Engineers λογότυπο" width="46" height="46" /></span>
       <span class="name">GF-Engineers<small>Τεχνικό Γραφείο Μελετών</small></span>
     </a>
     <nav class="nav-links">
       <a href="#services">Υπηρεσίες</a>
       <a href="#about">Το Γραφείο</a>
       <a href="#process">Διαδικασία</a>
+      <a href="#works">Έργα</a>
       <a href="#contact">Επικοινωνία</a>
     </nav>
     <div class="nav-cta">
@@ -477,6 +527,28 @@
   </div>
 </section>
 
+<!-- ============ GALLERY ============ -->
+<section class="gallery section-pad" id="works">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Το έργο μας</span>
+      <h2>Επιλεγμένα έργα &amp; αποτυπώσεις</h2>
+      <p>Μια ματιά σε μελέτες, κατασκευές και αποτυπώσεις που έχει αναλάβει το γραφείο.</p>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+    <p class="gallery-empty" id="galleryEmpty" hidden>Σύντομα θα προστεθούν φωτογραφίες έργων.</p>
+  </div>
+</section>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Προβολή φωτογραφίας">
+  <button class="lb-close" id="lbClose" aria-label="Κλείσιμο">&times;</button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Προηγούμενη">&lsaquo;</button>
+  <img id="lbImg" src="" alt="Έργο γραφείου GF-Engineers" />
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Επόμενη">&rsaquo;</button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
 <!-- ============ CONTACT ============ -->
 <section class="contact" id="contact">
   <div class="wrap">
@@ -586,6 +658,82 @@
     });
   }, {threshold:.5});
   counters.forEach(c => cio.observe(c));
+
+  // ---------- dynamic gallery ----------
+  // Ανιχνεύει αυτόματα αρχεία photo-1, photo-2, ... με κατάληξη
+  // .webp/.jpg/.jpeg/.png/.avif. Απλώς ανέβασε ένα νέο photo-N στο repo
+  // και εμφανίζεται μόνο του στην επόμενη φόρτωση της σελίδας.
+  (function(){
+    const grid = document.getElementById('galleryGrid');
+    const empty = document.getElementById('galleryEmpty');
+    const exts = ['webp','jpg','jpeg','png','avif'];
+    const GAP_TOLERANCE = 3;   // πόσα διαδοχικά «κενά» πριν σταματήσει η αναζήτηση
+    const photos = [];
+
+    const zoomIcon = '<span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></svg></span>';
+
+    function probe(i){
+      return new Promise(res=>{
+        let e = 0;
+        (function next(){
+          if(e >= exts.length){ res(null); return; }
+          const src = 'photo-' + i + '.' + exts[e];
+          const img = new Image();
+          img.onload = () => res(src);
+          img.onerror = () => { e++; next(); };
+          img.src = src;
+        })();
+      });
+    }
+
+    function addTile(src){
+      const idx = photos.length;
+      photos.push(src);
+      const item = document.createElement('div');
+      item.className = 'g-item reveal in';
+      item.innerHTML = '<img loading="lazy" src="' + src + '" alt="Έργο γραφείου GF-Engineers ' + (idx+1) + '">' + zoomIcon;
+      item.addEventListener('click', () => openLb(idx));
+      grid.appendChild(item);
+    }
+
+    async function build(){
+      let i = 1, misses = 0;
+      while(misses < GAP_TOLERANCE && i < 300){
+        const src = await probe(i);
+        if(src){ addTile(src); misses = 0; }
+        else { misses++; }
+        i++;
+      }
+      if(photos.length === 0) empty.hidden = false;
+    }
+
+    // ---------- lightbox ----------
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCounter = document.getElementById('lbCounter');
+    let cur = 0;
+
+    function show(){
+      lbImg.src = photos[cur];
+      lbCounter.textContent = (cur+1) + ' / ' + photos.length;
+    }
+    function openLb(i){ cur = i; show(); lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeLb(){ lb.classList.remove('open'); document.body.style.overflow = ''; }
+    function step(d){ cur = (cur + d + photos.length) % photos.length; show(); }
+
+    document.getElementById('lbClose').addEventListener('click', closeLb);
+    document.getElementById('lbPrev').addEventListener('click', () => step(-1));
+    document.getElementById('lbNext').addEventListener('click', () => step(1));
+    lb.addEventListener('click', e => { if(e.target === lb) closeLb(); });
+    document.addEventListener('keydown', e => {
+      if(!lb.classList.contains('open')) return;
+      if(e.key === 'Escape') closeLb();
+      else if(e.key === 'ArrowLeft') step(-1);
+      else if(e.key === 'ArrowRight') step(1);
+    });
+
+    build();
+  })();
 
   // year
   document.getElementById('year').textContent = new Date().getFullYear();
